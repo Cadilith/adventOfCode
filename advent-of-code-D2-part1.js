@@ -42,7 +42,7 @@ for (let i = 0; i < input.length; i++) {
 	const maxGreen = Math.max(...game.map((draw) => draw.green));
 	const maxBlue = Math.max(...game.map((draw) => draw.blue));
 
-	//for this game, if the draws matches the elf maximum cubes, add the id of the game to the result.
+	//for this game, if the draws matches the elf maximum cubes, add the id of the game to the final result.
 	if (maxRed <= 12 && maxGreen <= 13 && maxBlue <= 14) {
 		result += i + 1;
 	}
