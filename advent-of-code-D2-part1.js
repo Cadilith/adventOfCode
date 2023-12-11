@@ -5,9 +5,12 @@ const input = fs.readFileSync('inputD2.txt', 'utf8').split('\r\n');
 //sum of the IDs of possible games
 let result = 0;
 
-//each line is splited to keep only the draws
+//each line of input is splitted to keep only the draws
 for (let i = 0; i < input.length; i++) {
 	const line = input[i];
+
+	//each game will be an array of draws (objects)
+	//with key/values of colors and qties
 	const game = line
 		.split(': ')[1]
 		.split('; ')
