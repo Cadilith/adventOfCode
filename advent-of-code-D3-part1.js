@@ -19,37 +19,68 @@ function findNumbers(l) {
 	return numbersIndex;
 }
 
-function checkForSymbols(line, prevLine, nextLine, number) {
-	for (let i = number.index - 1; i <= number.index + number.length; i++) {
-		console.log(i);
-
-		if (prevLine == undefined) {
-			return nextLine[i].match(regexSymbols) || line[i].match(regexSymbols);
-		} else if (nextLine == undefined) {
-			return prevLine[i].match(regexSymbols) || line[i].match(regexSymbols);
-		} else if (prevLine !== undefined && nextLine !== undefined) {
-			prevLine[i].match(regexSymbols) ||
-				nextLine[i].match(regexSymbols) ||
-				line[i].match(regexSymbols);
-		}
-	}
-}
-
 for (let y = 0; y < input.length; y++) {
 	let numbers = findNumbers(input[y]);
 
 	numbers.forEach((number) => {
 		let isAValidPart = false;
 
-		if (number.index !== 0 && number.index + number.length !== input[y].length - 1) {
-			for (let x = number.index - 1; x < number.index + number.length + 1; x++) {
+		//first digit case
+		if (number.index == 0) {
+			for (let x = number.index; x < number.index + number.length + 1; x++) {
+				//same line check for symbols
 				if (input[y][x].match(regexSymbols) != null) {
+					isAValidPart = true;
+				}
+				//previous line if there is one
+				if (y != 0 && input[y - 1][x].match(regexSymbols) != null) {
+					isAValidPart = true;
+				}
+				//next line if there is one
+				if (y != input.length - 1 && input[y + 1][x].match(regexSymbols) != null) {
+					isAValidPart = true;
+				}
+			}
+		}
+		//last digit case
+		else if (number.index + number.length === input[y].length) {
+			for (let x = number.index - 1; x < number.index + number.length; x++) {
+				//same line check for symbols
+				if (input[y][x].match(regexSymbols) != null) {
+					isAValidPart = true;
+				}
+				//previous line if there is one
+				else if (y != 0 && input[y - 1][x].match(regexSymbols) != null) {
+					isAValidPart = true;
+				}
+				//next line if there is one
+				else if (y != input.length - 1 && input[y + 1][x].match(regexSymbols) != null) {
 					isAValidPart = true;
 				}
 			}
 		}
 
-		console.log(number.number + ' ' + isAValidPart);
+		//not first or last digit
+		else {
+			for (let x = number.index - 1; x < number.index + number.length + 1; x++) {
+				//same line check for symbols
+				if (input[y][x].match(regexSymbols) !== null) {
+					isAValidPart = true;
+				}
+				//previous line if there is one
+				if (y !== 0 && input[y - 1][x].match(regexSymbols) !== null) {
+					isAValidPart = true;
+				}
+				//next line if there is one
+				if (y !== input.length - 1 && input[y + 1][x].match(regexSymbols) !== null) {
+					isAValidPart = true;
+				}
+			}
+		}
+
+		if (isAValidPart === true) {
+			result += number.number;
+		}
 	});
 }
-// console.log(regexSymbols.test(input[1][46]));
+console.log(`result : ${result}`);
