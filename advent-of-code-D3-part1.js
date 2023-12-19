@@ -20,27 +20,36 @@ function findNumbers(l) {
 }
 
 function checkForSymbols(line, prevLine, nextLine, number) {
-	for (let i = number.index - 1; i <= number.index + number.length + 1; i++) {
-		return (
-			prevLine[i].includes(regexSymbols) ||
-			nextLine[i].includes(regexSymbols) ||
-			line[i].includes(regexSymbols)
-		);
-	}
-}
+	for (let i = number.index - 1; i <= number.index + number.length; i++) {
+		console.log(i);
 
-for (let i = 0; i < input.length - 1; i++) {
-	let line = input[i];
-	let prevLine = input[i - 1];
-	let nextLine = input[i + 1];
-
-	for (let i = 0; i < findNumbers(line).length; i++) {
-		let number = findNumbers(line)[i];
-		if (checkForSymbols(line, prevLine, nextLine, number) === true) {
-			result += Number(findNumbers(line)[i].number);
-			console.log(findNumbers(line)[i].number);
+		if (prevLine == undefined) {
+			return nextLine[i].match(regexSymbols) || line[i].match(regexSymbols);
+		} else if (nextLine == undefined) {
+			return prevLine[i].match(regexSymbols) || line[i].match(regexSymbols);
+		} else if (prevLine !== undefined && nextLine !== undefined) {
+			prevLine[i].match(regexSymbols) ||
+				nextLine[i].match(regexSymbols) ||
+				line[i].match(regexSymbols);
 		}
 	}
 }
 
-// console.log(result);
+for (let y = 0; y < input.length; y++) {
+	let numbers = findNumbers(input[y]);
+
+	numbers.forEach((number) => {
+		let isAValidPart = false;
+
+		if (number.index !== 0 && number.index + number.length !== input[y].length - 1) {
+			for (let x = number.index - 1; x < number.index + number.length + 1; x++) {
+				if (input[y][x].match(regexSymbols) != null) {
+					isAValidPart = true;
+				}
+			}
+		}
+
+		console.log(number.number + ' ' + isAValidPart);
+	});
+}
+// console.log(regexSymbols.test(input[1][46]));
